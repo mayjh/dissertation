@@ -1,0 +1,520 @@
+<style>
+.footer {
+    color: black;
+    background: #E8E8E8;
+    position: fixed;
+    top: 90%;
+    text-align:center;
+    width:100%;
+}
+.midcenter {
+    position: fixed;
+    top: 20%;
+    left: 5%;
+}
+.small-code {
+  font-size: 0.3em;
+}
+
+.reveal h3 {
+  word-wrap: normal;
+  -moz-hyphens: none;
+}
+.reveal h1 {
+  word-wrap: normal;
+  -moz-hyphens: none;
+  font-size: 1.2em; 
+}
+</style>
+
+Individual Differences: From Bird Expertise Test to Business Applications
+========================================================
+author: Jianhong (May) Shen
+date: 26 July 2017
+autosize: true
+font-family: 'Helvetica'
+css: custom.css
+
+About Myself
+========================================================
+class: midcenter
+![myself](images/myself1.jpg)
+
+Lanzhou - Beijing
+
+About Myself
+========================================================
+class: midcenter
+![myself](images/myself2.jpg)
+
+Lanzhou - Beijing - Nashville
+
+About Myself
+========================================================
+class: midcenter
+![myself](images/myself1.jpg)
+
+Lanzhou - Beijing - Nashville
+- Vanderbilt PhD candidate
+- Aspiring Data Scientist
+
+Outline
+========================================================
+class: midcenter
+- Background
+- Bird Expertise Test
+ + Test Design
+ + Survey Data Analysis
+ + Test Data Analysis
+- Real-World Application
+
+Outline
+========================================================
+class: midcenter
+- **Background**
+- Bird Expertise Test
+ + Test Design
+ + Survey Data Analysis
+ + Test Data Analysis
+- Real-World Application
+
+Background
+========================================================
+left: 80%
+![lab](images/lab.jpg)
+
+***
+![tom](images/tom.jpg)
+![minhee](images/minhee.jpeg)
+![ethan](images/ethan.jpg)
+
+Background
+========================================================
+![3mt](images/3mt.jpg)
+
+Background
+========================================================
+class: midcenter
+Why bird?
+ - Life example
+ - Literature base
+ - Participant pool
+![survey](images/bird_survey.png)
+
+Outline
+========================================================
+class: midcenter
+- Background
+- Bird Expertise Test
+ + **Test Design**
+ + Survey Data Analysis
+ + Test Data Analysis
+- Real-World Application
+
+Bird Expertise Test
+========================================================
+class: midcenter
+- Bird expertise definition:  
+The ability to rapidly and accurately identify birds
+- Project aim:  
+To develop and validate a bird expertise test
+
+Test Development
+========================================================
+![map1](images/map1.png)
+
+Test Development
+========================================================
+![map2](images/map2.png)
+
+Test Development
+========================================================
+![map3](images/map3.png)
+
+Business Insights
+========================================================
+class: midcenter
+ - Domain knowledge is essential for data collection, measurement design, feature engineering etc.
+
+Test Examples
+========================================================
+![easy](images/vulture_q.png)
+
+Test Examples
+========================================================
+![easy](images/vulture_a.png)
+
+Test Examples
+========================================================
+<div class="midcenter">
+  <div style="margin-left:-0px;margin-top:-75px;">
+    <img style="margin:0px; background-color:transparent; border:0px; box-shadow:none;" src="images/vulture.png">
+    </img>
+  </div>
+</div>
+
+Test Examples
+========================================================
+![hard](images/nashville_q.png)
+
+Test Examples
+========================================================
+![hard](images/nashville_a.png)
+
+Test Examples
+========================================================
+<div class="midcenter">
+  <div style="margin-left:-0px;margin-top:-75px;">
+    <img style="margin:0px; background-color:transparent; border:0px; box-shadow:none;" src="images/nashville.png">
+    </img>
+  </div>
+</div>
+
+Data Collection
+========================================================
+class: midcenter
+ - 489 birding societies
+ - 741 participants (407 female)  
+ - age between 16 and 85 (mean 47.93, SD 17.23)
+ - survey + bird expertise test
+
+Outline
+========================================================
+class: midcenter
+- Background
+- Bird Expertise Test
+ + Test Design
+ + **Survey Data Analysis**
+ + Test Data Analysis
+- Real-World Application
+
+Survey Data Analysis
+======================================================== 
+class: midcenter
+![survey](images/survey.png)
+
+Survey Data Analysis
+========================================================
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+library(tidyverse)
+library(ltm)
+
+load('../@write_now/Shen_dissertation/data/covariates.Rdata')
+load('../@write_now/Shen_dissertation/data/dat_MDS_130.Rdata')
+load('../@write_now/Shen_dissertation/data/IRTresults.Rdata')
+load('../@write_now/Shen_dissertation/data/VBET2015.Rdata')
+# person data where experience and self rate non null
+person$part_all = apply(person[,grepl('part_region',colnames(person),fixed=T)],1,sum)
+theme_set(theme_bw(base_size=20))
+theme_update(
+  axis.text.x = element_text(colour="grey20",size=24,hjust=.5,vjust=.5,face="plain"), 
+  axis.text.y = element_text(colour="grey20",size=24,hjust=1,vjust=0,face="plain"),
+  axis.title.x = element_text(colour="grey20",size=20,hjust=.5,vjust=0,face="plain"),    
+  axis.title.y = element_text(colour="grey20",size=20,hjust=.5,vjust=.5,face="plain"))
+person %>% filter(explevel!='') %>%
+  ggplot(aes(x=explevel)) +  geom_bar() + coord_flip() +
+  scale_x_discrete(labels=c('novice'='Novice','beginner'='Beginner',
+                                 'intermediate'='Intermediate','advanced'='Advanced',
+                                 'expert1'='Expert I','expert2'='Expert II',
+                                 'expert3'='Expert III'))
+```
+
+Survey Data Analysis
+========================================================
+Rate your expertise on a scale of 1 (novice) to 5 (expert) for the following birding regions.
+ - Eastern US and Eastern Canada:
+ - Western US and Western Canada:
+ - Arctic:
+ - Pelagic (Atlantic and Pacific):
+ - South Texas:
+ - Southeast Arizona:
+ - South Florida:
+ - Caribbean:
+ - Mexico and Central America:
+
+Survey Data Analysis
+========================================================
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+person %>% filter(explevel!='') %>%
+  ggplot(aes(x=explevel,y=part_all,fill=explevel)) +  geom_boxplot(show.legend = F) +
+  labs(x='Self-Rated Expertise Level', y='Self-Reported Expertise Score') +
+  scale_fill_brewer(palette = 'Blues') +
+  theme(axis.text.x = element_text(angle = 30)) +
+  scale_x_discrete(labels=c('novice'='Novice','beginner'='Beginner',
+                                 'intermediate'='Intermediate','advanced'='Advanced',
+                                 'expert1'='Expert I','expert2'='Expert II',
+                                 'expert3'='Expert III'))
+```
+
+Survey Data Analysis
+========================================================
+Self-reported birding experience vs. expertise level:
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+person %>% filter(explevel != '') %>%
+  ggplot(aes(x = explevel, y = experience, fill=explevel)) +
+       geom_boxplot(show.legend = F) +
+       labs(x='Self-Rated Expertise Level', y='Self-Reported Experience in Year') +
+       scale_fill_brewer(palette = 'Blues') +
+       theme(axis.text.x = element_text(angle = 30)) +
+       scale_x_discrete(labels=c('novice'='Novice','beginner'='Beginner',
+                                 'intermediate'='Intermediate','advanced'='Advanced',
+                                 'expert1'='Expert I','expert2'='Expert II',
+                                 'expert3'='Expert III'))
+```
+
+Outline
+========================================================
+class: midcenter
+- Background
+- Bird Expertise Test
+ + Test Design
+ + Survey Data Analysis
+ + **Test Data Analysis**
+- Real-World Application
+
+Dimensionality Analysis
+========================================================
+class: midcenter
+```{r, fig.width=8, fig.height=6, echo=FALSE}
+eigen = data.frame(Factor = c(1:10),
+  Eigenvalue = c(37.66, 5.76, 2.88, 2.38, 2.10, 1.98, 1.88, 1.71, 1.60, 1.54))
+ggplot(eigen, aes(factor(Factor),Eigenvalue)) + geom_col() + labs(x='Factor')
+```
+
+Item Response Model - 1PL
+========================================================
+$$log(\frac{\pi_{pi}}{1-\pi_{pi}})=\theta_p-\beta_i$$
+
+```{r, fig.width=8, fig.height=6, echo=FALSE}
+theta = seq(-4,4,0.1)
+n = length(theta)
+beta = c(rep(0,n), rep(0,n), rep(0,n), rep(1,n), rep(-1,n))
+alpha = c(rep(1,n), rep(1.5,n), rep(0.5,n), rep(1,n), rep(1,n))
+p = exp(alpha * (theta-beta)) / (1+exp(alpha * (theta-beta)))
+demo = tibble(theta=rep(theta,5),beta=beta, alpha=alpha, p=p)
+demo %>% filter(beta==0, alpha==1) %>%
+ggplot(aes(x=theta, y=p)) + geom_line(size=3,color='blue') + xlim(c(-4,4)) + ylim(0,1) + 
+  geom_abline(intercept = 0.5, slope = 0.3,size=3) +
+  labs(x='Latent Trait',y='Probability of Item Endorsement')
+```
+
+Item Response Model - 1PL
+========================================================
+$$log(\frac{\pi_{pi}}{1-\pi_{pi}})=\theta_p-\beta_i$$
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+library(tidyverse)
+theta = seq(-4,4,0.1)
+n = length(theta)
+beta = c(rep(0,n), rep(0,n), rep(0,n), rep(1,n), rep(-1,n))
+alpha = c(rep(1,n), rep(1.5,n), rep(0.5,n), rep(1,n), rep(1,n))
+p = exp(alpha * (theta-beta)) / (1+exp(alpha * (theta-beta)))
+demo = tibble(theta=rep(theta,5),beta=beta, alpha=alpha, p=p)
+demo %>% filter(alpha==1) %>%
+ggplot(aes(x=theta, group=factor(beta), color=factor(beta), y=p)) + 
+  geom_line(size=3) + geom_vline(xintercept = 0) +
+  xlim(c(-4,4)) + ylim(0,1) + theme(legend.position="top") + 
+  labs(x='Latent Trait',y='Probability of Item Endorsement',
+       title='One-Parameter Model with Different Difficulty') +
+  scale_color_discrete(name ="Difficulty: ",breaks=c("-1", "0", "1"),
+                          labels=c("Easy", "Medium", "Difficult"))
+```
+
+Item Response Model - 2PL
+========================================================
+$$logit(\frac{\pi_{pi}}{1-\pi_{pi}})=\alpha_i(\theta_p-\beta_i)$$
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+library(tidyverse)
+theta = seq(-4,4,0.1)
+n = length(theta)
+beta = c(rep(0,n), rep(0,n), rep(0,n), rep(1,n), rep(-1,n))
+alpha = c(rep(1,n), rep(1.5,n), rep(0.5,n), rep(1,n), rep(1,n))
+p = exp(alpha * (theta-beta)) / (1+exp(alpha * (theta-beta)))
+demo = tibble(theta=rep(theta,5),beta=beta, alpha=alpha, p=p)
+demo %>% filter(beta==0) %>%
+ggplot(aes(x=theta, group=factor(alpha), color=factor(alpha), y=p)) + 
+  geom_line(size=3) + geom_vline(xintercept = c(-1,1)) +
+  xlim(c(-4,4)) + ylim(0,1) + theme(legend.position="top") + 
+  labs(x='Latent Trait',y='Probability of Item Endorsement',
+       title='One-Parameter Model with Different Discriminability') +
+  scale_color_discrete(name ="Discriminability: ",breaks=c("0.5", "1", "1.5"),
+                          labels=c("Low", "Medium", "High"))
+```
+
+Item Response Model - 3PL
+========================================================
+$$\pi_{pi}=\gamma_i+(1-\gamma_i)\frac{exp[\alpha_i(\theta_p-\beta_i)]}{1+exp[\alpha_i(\theta_p-\beta_i)]}$$
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+library(tidyverse)
+theta = seq(-4,4,0.1)
+n = length(theta)
+beta = c(rep(0,n), rep(0,n), rep(0,n))
+alpha = c(rep(1,n), rep(1,n), rep(1,n))
+gamma = c(rep(0,n), rep(0.25,n), rep(0.5,n))
+p = gamma + (1-gamma)*exp(alpha * (theta-beta)) / (1+exp(alpha * (theta-beta)))
+demo = tibble(theta=rep(theta,3),beta=beta, alpha=alpha, gamma=gamma, p=p)
+ggplot(demo, aes(x=theta, group=factor(gamma), color=factor(gamma), y=p)) + 
+  geom_line(size=3) + 
+  xlim(c(-4,4)) + ylim(0,1) + theme(legend.position="top") + 
+  labs(x='Latent Trait',y='Probability of Item Endorsement') +
+  scale_color_discrete(name ="Discriminability: ",breaks=c("0.5", "1", "1.5"),
+                          labels=c("Low", "Medium", "High"))
+```
+
+Business Insights
+========================================================
+class: midcenter
+ - Item response models capture individual differences on both person and product side
+ - Item response models make better assumption about item endorsement probability
+
+Model Selection
+========================================================
+class: midcenter
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+aic <- c(57648.01, 56083.08, 55491.84) 
+bic <- c(58085.77, 56949.39, 56791.30)
+criteria <- data.frame(criterion=c(rep('AIC',3),rep('BIC',3)),value=c(aic,bic),
+                   model = c(1:3))
+criteria %>% ggplot(aes(x=criterion,fill=factor(model),y=value)) + 
+  geom_col(position = 'dodge') + labs(x='Criteria',y='Value') + 
+  scale_fill_discrete(name = "Model", breaks=c("1", "2", "3"),
+                      labels=c('One-Parameter','Two-Parameter','Three-Parameter') )
+```
+
+Wright Map
+========================================================
+class: midcenter
+```{r wrightmap, fig.width=10, fig.height=7, warning= FALSE, echo=FALSE}
+library(WrightMap)
+level_94=data.frame(level=items$expertise.level,n.level=items$level.number)
+# level_94$level is a variable that denotes the level for each item, below I changed the
+# color for each difficulty level
+itemcolors <- rep('black',time=ncol(binary))
+itemcolors[level_94$level=="Advanced"] = 'brown'
+itemcolors[level_94$level=="Intermediate"] = 'red'
+itemcolors[level_94$level=="Beginner"] = 'tomato'
+itemcolors[level_94$level=="Novice"] = 'salmon'
+itemcolors[level_94$level=="Practice"] = 'orange'
+
+thresholds = coef_item[,'Dffclt']
+itemcolors = itemcolors[order(thresholds)]
+# level_94$n.level denotes the level difficulty in number, with 1 being easiest, and 6 most difficult
+# I changed the size of the diamond depending on difficulty level, "/2+1" was just to make the
+# size differences not too drastic
+itemcex28 = as.numeric(level_94$n.level)/2+1
+itemnames <- paste(c(1:94))
+
+wrightMap( thetas, thresholds[-52],
+           use.hist = T,axis.logits="Item Difficulty",axis.persons="Person Ability",
+           show.thr.lab = F, axis.items = "Question Number",
+           label.items = paste(c(1:51,53:94)),
+           label.items.rows = 3, return.thresholds = F,
+           thr.sym.cex = itemcex28[-52],
+           thr.sym.col.bg = itemcolors[-52])
+```
+
+Understanding Test Scores
+========================================================
+ - Item side
+ - Person side
+![myself](images/taxonomy.png)
+
+Understanding Test Scores
+========================================================
+![cotinga](images/cotinga.png)
+
+Understanding Test Scores
+========================================================
+Item side:
+ - American Birding Association commonness code (↑)
+ - Gender of the bird image used (↑)
+ - Number of foils from different orders(↓)
+ - Number of foils from different families(↓)
+ - Number of foils from different genuses(↓)
+
+Understanding Test Scores
+========================================================
+Person side:
+ - Experience (↑)
+ - Gender (?)
+ - Age (?)
+ - Birding frequency (↑)
+ - Birding-related training (↑)
+
+Understanding Test Scores
+========================================================
+```{r echo=FALSE}
+tmp = summary(model4.2)$coefficients
+rownames(tmp) = c('Intercept','ABA Commonness','Bird Gender','N Different Orders',
+  'N Different Families','N Different Genuses','Birding Frequency','Birding Experience',
+  'Participant Gender','Age','Training','Medical Condition')
+kable(tmp[-c(1,12),], digits = 2, caption = "Coefficients")
+```
+
+Understanding Test Scores
+========================================================
+```{r fig.width=10, fig.height=7, echo=FALSE}
+items$foil.quality = do.call(paste, c(items[,c("n.dis.order","n.dis.family","n.dis.genus")], sep=""))
+items$foil.quality = factor(items$foil.quality)
+items$beta = coef_item[,2]
+ggplot(items[-52,],aes(foil.quality,beta)) + geom_boxplot(aes(fill=as.numeric(foil.quality),show.legend = FALSE)) + 
+  labs(x="Item Foil Design",y="Item Difficulty") +
+  theme(axis.text.x = element_text(angle = 30, size=14),legend.position="none") 
+```
+
+Understanding Test Scores
+========================================================
+```{r fig.width=10, fig.height=7, echo=FALSE}
+person$theta = thetas
+ggplot(person[person$freq!='',],aes(freq,theta,fill=freq)) + geom_violin(trim=FALSE) + 
+  geom_boxplot(width=0.1, fill="white")+
+  labs(x="Birding Frequency",y="Person Abilitiy") +
+  theme(axis.text.x = element_text(angle = 30, size=14)) +
+  scale_fill_discrete(name = "Birding Frequency", 
+                      breaks=c("rarely", "occasionally", "2 weeks",'once','twice'),
+                      labels=c('Rarely','Occasionally','Once every week','Once per week',
+                               'Twice per week') )
+```
+
+Business Insights
+========================================================
+class: midcenter
+ - Item response models can be used to understand the causes of individual differences on both person side and product side
+ 
+Outline
+========================================================
+class: midcenter
+- Background
+- Bird Expertise Test
+ + Test Design
+ + Survey Data Analysis
+ + Test Data Analysis
+- **Real-World Application**
+
+Business Applications
+========================================================
+class: midcenter
+- Measure individual differences in job/product satisfaction
+- Understand how different products appeal to customers
+- Capture individual differences on both person and product side
+- Understand the causes of individual differences
+ 
+Summary
+========================================================
+class: midcenter
+- Bird Expertise Test
+ + Test Design
+ + Survey Data Analysis
+ + Test Data Analysis
+- Real-World Application
+
+Thank you for your attention!
+========================================================
+ - Email: j.shen33@gmail.com
+ - Website: mayshen.rocks
+ - GitHub: https://github.com/mayjh
+ - Kaggle: https://www.kaggle.com/mayshen
+ - LinkedIn: https://www.linkedin.com/in/jianhong-may-shen-14412339/
+ - Google Scholar: https://scholar.google.com/citations?user=F9Hf2RQAAAAJ&hl=en
